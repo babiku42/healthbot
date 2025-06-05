@@ -1,30 +1,57 @@
 import streamlit as st
 from utils import get_bot_response, get_triage_level, run_symptom_checker
 
-st.set_page_config(page_title="Health AI Assistant", page_icon="🩺")
-st.title("🩺 Health Chatbot with AI")
+# Page settings
+st.set_page_config(page_title="Health AI Assistant", page_icon="🩺", layout="centered")
+st.markdown(
+    """
+    <style>
+    .main { background-color: #f0f2f6; }
+    .stButton > button {
+        color: white;
+        background-color: #4CAF50;
+        font-size: 16px;
+        border-radius: 8px;
+        height: 3em;
+        width: 100%;
+    }
+    .stTextInput > div > div > input {
+        font-size: 18px;
+        padding: 10px;
+        border-radius: 8px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-with st.expander("ℹ️ How it works"):
+st.title("🩺 Health Chatbot")
+st.caption("Your AI-powered health assistant (Not a substitute for professional medical advice).")
+
+with st.expander("ℹ️ **How it works**"):
     st.markdown("""
-    This chatbot uses the **DeepSeek R1 model** via OpenRouter to:
+    This chatbot uses the **DeepSeek R1** AI model via OpenRouter to:
     - 🧠 Answer health-related questions.
-    - 🚦 Assess urgency of your symptoms.
-    - 🩻 Provide guidance based on reported symptoms.
+    - 🚦 Assess the urgency of your symptoms.
+    - 💡 Suggest possible causes and advice.
 
-    ⚠️ Note: This is **not a substitute for professional medical advice**.
+    This is an experimental tool — please consult a real doctor for any medical concerns.
     """)
 
-user_input = st.text_input("Enter your symptoms or health question:")
+# Input field
+st.markdown("### ❓ What would you like to ask or describe?")
+user_input = st.text_input("Type your symptoms or question here", placeholder="e.g., I have a sore throat and fever")
 
-if st.button("Get Response"):
+# Button to trigger AI response
+if st.button("💬 Get AI Response"):
     if user_input:
-        with st.spinner("Thinking..."):
+        with st.spinner("Thinking... Please wait a few seconds..."):
             try:
                 reply = get_bot_response(user_input)
                 triage = get_triage_level(user_input)
                 assessment = run_symptom_checker(user_input)
             except Exception as e:
-                st.error(f"Something went wrong: {e}")
+                st.error(f"❌ Something went wrong: {e}")
                 st.stop()
 
         st.markdown("### 🤖 AI Response")
@@ -32,15 +59,15 @@ if st.button("Get Response"):
 
         st.markdown("### 🚦 Triage Level")
         if "low" in triage:
-            st.info("Urgency: **Low** — Monitor your symptoms.")
+            st.info("🟢 Urgency: **Low** — Monitor your symptoms at home.")
         elif "medium" in triage:
-            st.warning("Urgency: **Medium** — Consider seeing a doctor.")
+            st.warning("🟠 Urgency: **Medium** — Consider seeing a doctor soon.")
         elif "high" in triage:
-            st.error("Urgency: **High** — Seek medical attention immediately.")
+            st.error("🔴 Urgency: **High** — Seek **immediate** medical attention.")
         else:
-            st.write(f"Triage result: {triage}")
+            st.write(f"⚠️ Could not determine urgency: {triage}")
 
-        st.markdown("### 🩻 Symptom Analysis")
+        st.markdown("### 🩺 Symptom Analysis")
         st.write(assessment)
     else:
-        st.warning("Please enter some symptoms or a question.")
+        st.warning("Please enter some symptoms or a question above.")
