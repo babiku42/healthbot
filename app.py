@@ -82,9 +82,9 @@ with col2:
         """
     )
     st.image(
-        "https://digital.nls.uk/great-war/assets/img/content/general/pic-casualties-4-large.gif?auto=format&fit=crop&w=400&q=60",
+        "https://digital.nls.uk/great-war/assets/img/content/general/pic-casualties-4-large.gif",
         caption="Stay healthy! 💙",
-        use_column_width=True,
+        use_container_width=True,
     )
 
 # --- FOOTER ---
