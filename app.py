@@ -82,7 +82,7 @@ with col2:
         """
     )
     st.image(
-        "https://digital.nls.uk/great-war/assets/img/content/general/pic-casualties-4-large.gif",
+        "https://english.onlinekhabar.com/wp-content/uploads/2018/06/Bir-Hospital-Final.jpg",
         caption="Stay healthy! 💙",
         use_container_width=True,
     )
